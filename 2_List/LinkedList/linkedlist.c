@@ -14,79 +14,63 @@
 
 /*linked list를 만든다*/
 LinkedList*	createLinkedList()
-// {
-// 	LinkedList	*pList;
-
-// 	pList = (LinkedList *)malloc(sizeof(LinkedList));
-// 	if (!pList)
-// 		return (NULL);
-// 	memset(pList, 0, sizeof(LinkedList));
-// 	return (pList);
-// }
 {
-    LinkedList *new;
+	LinkedList	*pList;
 
-    new = calloc(1, sizeof(LinkedList)); // 구조체 변수 (현재 원소 개수 - 0, pLink - NULL) 초기화를 위해 calloc 사용하여 할당
-    if (!new)
-        return (NULL);
-    return (new);
+	pList = (LinkedList *)calloc(1, sizeof(LinkedList));
+	if (!pList)
+		return (FALSE);
+	return (pList);
 }
 
 /*linked list의 특정 위치에 node를 추가한다.*/
 int addLLElement(LinkedList* pList, int position, ListNode element)  
-// {
-//     ListNode* pPreNode;
-//     ListNode* pNewNode;
-
-// 	if (!pList || !(position >= 0 && position <= pList->currentElementCount))
-// 		return (FALSE);
-// 	pNewNode = (ListNode*)malloc(sizeof(ListNode));
-// 	if (!pNewNode)
-// 		return (FALSE);
-// 	*pNewNode = element;
-// 	pNewNode->pLink = NULL;
-
-// 	pPreNode = &(pList->headerNode);    //들어가야할 위치를 찾기 위한 노드
-// 	while (position--)
-// 		pPreNode = pPreNode->pLink;        //다음 노드로 계속 넘어감
-// 	pNewNode->pLink = pPreNode->pLink;    //노드 연결
-// 	pPreNode->pLink = pNewNode;
-// 	pList->currentElementCount++;
-//     return (TRUE);
-// }
 {
-    ListNode *new; // 추가하려는 노드
-    ListNode *prev; // 추가하려는 노드를 연결 할 이전 노드
+	ListNode* pNode;
+	ListNode* pNewNode;
 
-    if(!pList || position < 0 || position > pList->currentElementCount) // 에러 처리
-        return (FALSE);
-    new = malloc(sizeof(ListNode) * 1); // 새 노드 할당
-    if (!new)
-        return (FALSE);
-    *new = element; // 역참조를 통해 추가하려는 원소의 모든 정보 저장
-    prev = &(pList->headerNode); // headerNode라는 더미노드를 통해 연결
-    for (int i = 0; i < position; i++) // 추가하려는 position '전' 까지 prev 이동
-        prev = prev->pLink;
-    new->pLink = prev->pLink; // 추가하려는 노드의 pLink에 이전 노드의 pLink를 연결
-    prev->pLink = new; // 이전 노드의 pLink를 추가하려는 노드에 연결
-    // 위 두 과정의 순서가 바뀔 시 이전 노드의 pLink를 잃게 되므로 순서 중요
-    pList->currentElementCount++; // 현재 원소 개수 갱신
-    return (TRUE);
+	if (!pList || !(position >= 0 && position <= pList->currentElementCount))
+		return (FALSE);
+	
+	pNewNode = (ListNode*)malloc(sizeof(ListNode));
+	if (!pNewNode)
+		return (FALSE);
+	*pNewNode = element;
+	pNewNode->pLink = NULL;
+	if (position == 0) {
+		// if (pList->currentElementCount == 0) {
+		// 	pList->headerNode.pLink = pNewNode;
+		// } else {
+			pNewNode->pLink = pList->headerNode.pLink;
+			pList->headerNode.pLink = pNewNode;
+		// }
+	} else {
+		pNode = getLLElement(pList, position-1);
+		pNewNode->pLink = pNode->pLink;
+		pNode->pLink = pNewNode;
+	}
+	pList->currentElementCount++;
+	return (TRUE);
 }
+
 /*linked list의 특정 위치에 있는 node를 제거한다.*/
 int removeLLElement(LinkedList *pList, int position)
 {
 	ListNode	*pDelNode;
 	ListNode	*pNode;
 
-	if (!pList || !(position >= 0 && position < pList->currentElementCount))
+	if (!pList || !(position >= 0 && position <= pList->currentElementCount))
 		return (FALSE);
-	pNode = &(pList->headerNode);
-	while (position--)
-		pNode = pNode->pLink;
-	pDelNode = pNode->pLink;
-	pNode->pLink = pDelNode->pLink;
+	if (position == 0) {
+		pDelNode = pList->headerNode.pLink;
+		pList->headerNode.pLink = pDelNode->pLink;
+	} else {
+		pNode = getLLElement(pList, position - 1);
+		pDelNode = pNode->pLink;
+		pNode->pLink = pDelNode->pLink;
+	}
 	free(pDelNode);
+	pDelNode = NULL;
 	pList->currentElementCount--;
 	return (TRUE);
 }
@@ -96,9 +80,9 @@ ListNode*	getLLElement(LinkedList *pList, int position)
 {
 	ListNode	*pNode;
 
-	if (!pList || !(position >= 0 && position < pList->currentElementCount))
-		return (NULL);
-	pNode = &(pList->headerNode);
+	if (!pList || !(position >= 0 && position <= pList->currentElementCount))
+		return (FALSE);
+	pNode = pList->headerNode.pLink;
 	while (position--)
 		pNode = pNode->pLink;
 	return (pNode);
@@ -110,16 +94,15 @@ void clearLinkedList(LinkedList *pList)
 	ListNode	*pDelNode;
 	ListNode	*pNode;
 
-	if (pList->currentElementCount == 0)
+	if (!pList || pList->currentElementCount == 0)
 		return ;
-	pNode = &(pList->headerNode);
-	while (pNode)
-	{
-		pDelNode = pNode;
-		pNode = pNode->pLink;
+	pNode = pList->headerNode.pLink;
+	while (pNode) {
+		pNode = pDelNode->pLink;
 		free(pDelNode);
-		pDelNode = NULL;
+		pDelNode = pNode;
 	}
+	pList->headerNode.pLink = NULL;
 	pList->currentElementCount = 0;
 }
 
@@ -144,15 +127,19 @@ void	deleteLinkedList(LinkedList *pList)
 
 int	main(void)
 {
-	LinkedList *temp;
-	ListNode *buf;
+	LinkedList *pList;
+	ListNode 	*pNode;
+	ListNode 	element;
+	int 	 	i;
+	int 	 	position;
+	ListNode 	a;
+	ListNode 	b;
+	ListNode 	c;
+	ListNode 	d;
+	ListNode 	e;
 
-	ListNode a;
-	ListNode b;
-	ListNode c;
-	ListNode d;
-	ListNode e;
-	
+	pList = NULL;
+
 	a.data = 5;
 	a.pLink = NULL;
 
@@ -165,35 +152,77 @@ int	main(void)
 	d.data = 4;
 	d.pLink = NULL;
 
-	e.data = 12;
+	e.data = 19;
 	e.pLink = NULL;
 	
-	temp = createLinkedList();
-	addLLElement(temp, 0, a);
-	addLLElement(temp, 0, b);
-	addLLElement(temp, 0, c);
-	addLLElement(temp, 0, d);
-	addLLElement(temp, 0, e);
-	buf = &(temp->headerNode);
-
-	while(buf)
-	{
-		printf("buf : %d\n", buf->data);
-		buf = buf->pLink;
-	}
+	//1. CREATE - 성공
+	pList = createLinkedList();
+	// if (pList)
+	// 	printf("Create Linked List : Success\n");
+	// else
+	// 	printf("Create Linked List : Failed\n");
 	
-	// ListNode *aa = getLLElement(temp, 3);
-	// printf("%d\n", aa->data);
-	// clearLinkedList(temp);
+	//2. ADD
+	position = 0;
+	// element.data = 3;
+	addLLElement(pList, 0, a); // 5 
+	addLLElement(pList, 1, b); // 1
+	addLLElement(pList, 2, c); // 3
+	addLLElement(pList, 3, d); // 4
+	addLLElement(pList, 1, e); // 19
+	// if (addLLElement(pList, 1, b))
+	// 	printf("Add : Success\n");
+	// else 
+	// 	printf("ADD : Failed\n");
+	i = 0;
+	pNode = &(pList->headerNode);
+	while (pNode) // 리스트 노드 순회
+	{
+		printf("[%d]: %d\n", i++, pNode->data);
+		pNode = pNode->pLink;
+	}
+	printf("\n");
 
-	// removeLLElement(temp, 2);
-	// deleteLinkedList(temp);
-	// buf = &(temp->headerNode);
-	// while(buf)
+	//3. REMOVE
+	// if(removeLLElement(pList, position))
+	// 	printf("Remove : Success\n");
+	// else
+	// 	printf("Remove : Failes\n");
+	// i = 0;
+	// pNode = &(pList->headerNode);
+	// while (pNode) // 리스트 노드 순회
 	// {
-	// 	printf("\n%d\n", buf->data);
-	// 	buf = buf->pLink;
+	// 	printf("[%d]: %d\n", i++, pNode->data);
+	// 	pNode = pNode->pLink;
 	// }
-	printf("the length %d\n", getLinkedListLength(temp));
+	// printf("\n");
+
+	//4. GET_E
+	// pNode = getLLElement(pList, position);
+	// if (pNode)
+	// 	printf("Get : [%d]: %d\n", position, pNode->data);
+	// else
+	// 	printf("Get : Failed\n");
+
+	//5. GET_L
+	// printf("Length: %d\n", getLinkedListLength(pList));
+
+	//6. CLEAR
+	// clearLinkedList(pList);
+
+	//7. DEL
+	// deleteLinkedList(pList);
+	// pList = NULL;
+
+	//PRINT
+	// i = 0;
+	// pNode = &(pList->headerNode);
+	// while (pNode) // 리스트 노드 순회
+	// {
+	// 	printf("[%d]: %d\n", i++, pNode->data);
+	// 	pNode = pNode->pLink;
+	// }
+	// printf("\n");
+
 	return 0;
 }
