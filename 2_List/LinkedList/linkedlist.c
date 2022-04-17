@@ -38,12 +38,8 @@ int addLLElement(LinkedList* pList, int position, ListNode element)
 	*pNewNode = element;
 	pNewNode->pLink = NULL;
 	if (position == 0) {
-		// if (pList->currentElementCount == 0) {
-		// 	pList->headerNode.pLink = pNewNode;
-		// } else {
 			pNewNode->pLink = pList->headerNode.pLink;
 			pList->headerNode.pLink = pNewNode;
-		// }
 	} else {
 		pNode = getLLElement(pList, position-1);
 		pNewNode->pLink = pNode->pLink;
@@ -59,7 +55,7 @@ int removeLLElement(LinkedList *pList, int position)
 	ListNode	*pDelNode;
 	ListNode	*pNode;
 
-	if (!pList || !(position >= 0 && position <= pList->currentElementCount))
+	if (!pList || !(position >= 0 && position < pList->currentElementCount))
 		return (FALSE);
 	if (position == 0) {
 		pDelNode = pList->headerNode.pLink;
@@ -94,12 +90,13 @@ void clearLinkedList(LinkedList *pList)
 	ListNode	*pDelNode;
 	ListNode	*pNode;
 
-	if (!pList || pList->currentElementCount == 0)
+	if (!pList)
 		return ;
-	pNode = pList->headerNode.pLink;
-	while (pNode) {
+	pDelNode = pList->headerNode.pLink;
+	while (pDelNode) {
 		pNode = pDelNode->pLink;
 		free(pDelNode);
+		pDelNode = NULL;
 		pDelNode = pNode;
 	}
 	pList->headerNode.pLink = NULL;
@@ -155,7 +152,7 @@ int	main(void)
 	e.data = 19;
 	e.pLink = NULL;
 	
-	//1. CREATE - 성공
+	//1. CREATE
 	pList = createLinkedList();
 	// if (pList)
 	// 	printf("Create Linked List : Success\n");
@@ -163,19 +160,18 @@ int	main(void)
 	// 	printf("Create Linked List : Failed\n");
 	
 	//2. ADD
-	position = 0;
 	// element.data = 3;
 	addLLElement(pList, 0, a); // 5 
 	addLLElement(pList, 1, b); // 1
 	addLLElement(pList, 2, c); // 3
-	addLLElement(pList, 3, d); // 4
-	addLLElement(pList, 1, e); // 19
+	addLLElement(pList, 2, d); // 4
+	addLLElement(pList, 0, e); // 19
 	// if (addLLElement(pList, 1, b))
 	// 	printf("Add : Success\n");
 	// else 
 	// 	printf("ADD : Failed\n");
 	i = 0;
-	pNode = &(pList->headerNode);
+	pNode = pList->headerNode.pLink;
 	while (pNode) // 리스트 노드 순회
 	{
 		printf("[%d]: %d\n", i++, pNode->data);
@@ -184,45 +180,63 @@ int	main(void)
 	printf("\n");
 
 	//3. REMOVE
-	// if(removeLLElement(pList, position))
-	// 	printf("Remove : Success\n");
-	// else
-	// 	printf("Remove : Failes\n");
-	// i = 0;
-	// pNode = &(pList->headerNode);
-	// while (pNode) // 리스트 노드 순회
-	// {
-	// 	printf("[%d]: %d\n", i++, pNode->data);
-	// 	pNode = pNode->pLink;
-	// }
-	// printf("\n");
+	position = 0;
+	if(removeLLElement(pList, position))
+		printf("Remove : Success\n");
+	else
+		printf("Remove : Failes\n");
+	i = 0;
+	pNode = pList->headerNode.pLink;
+	while (pNode) // 리스트 노드 순회
+	{
+		printf("[%d]: %d\n", i++, pNode->data);
+		pNode = pNode->pLink;
+	}
+	printf("\n");
 
 	//4. GET_E
-	// pNode = getLLElement(pList, position);
-	// if (pNode)
-	// 	printf("Get : [%d]: %d\n", position, pNode->data);
-	// else
-	// 	printf("Get : Failed\n");
+	position = 2;
+	pNode = getLLElement(pList, position);
+	if (pNode)
+		printf("Get : [%d]: %d\n", position, pNode->data);
+	else
+		printf("Get : Failed\n");
 
-	//5. GET_L
-	// printf("Length: %d\n", getLinkedListLength(pList));
+	// 5. GET_L
+	printf("Length: %d\n", getLinkedListLength(pList));
 
 	//6. CLEAR
-	// clearLinkedList(pList);
-
-	//7. DEL
-	// deleteLinkedList(pList);
-	// pList = NULL;
+	clearLinkedList(pList);
+	addLLElement(pList, 0, a); // 5 
+	addLLElement(pList, 1, b); // 1
+	printf("After clearLinkedList, Length: %d\n", getLinkedListLength(pList));
 
 	//PRINT
-	// i = 0;
-	// pNode = &(pList->headerNode);
-	// while (pNode) // 리스트 노드 순회
-	// {
-	// 	printf("[%d]: %d\n", i++, pNode->data);
-	// 	pNode = pNode->pLink;
-	// }
-	// printf("\n");
+	i = 0;
+	pNode = pList->headerNode.pLink;
+	while (pNode) // 리스트 노드 순회
+	{
+		printf("[%d]: %d\n", i++, pNode->data);
+		pNode = pNode->pLink;
+	}
+	printf("\n");
+
+	//7. DEL
+	deleteLinkedList(pList);
+	pList = NULL;
+	addLLElement(pList, 0, a); // 5 
+	addLLElement(pList, 1, b); // 1
+	printf("After deleteLinkedList, Length: %d\n", getLinkedListLength(pList));
+
+	//PRINT
+	i = 0;
+	pNode = pList->headerNode.pLink;
+	while (pNode) // 리스트 노드 순회
+	{
+		printf("[%d]: %d\n", i++, pNode->data);
+		pNode = pNode->pLink;
+	}
+	printf("\n");
 
 	return 0;
 }
