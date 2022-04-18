@@ -12,7 +12,7 @@
 
 <br>
 
-### 단일 연결 리스트 (Sing Linked List)
+## 단일 연결 리스트 (Sing Linked List)
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/9c/Single_linked_list.png">
 
@@ -23,7 +23,7 @@
 
 <br>
 
-### 특징
+## 특징
 - 동적으로 메모리 할당이 가능하다.
 - 삭제나 추가가 빠르다.
 - 데이터가 빈틈 없이 연속적이다.
