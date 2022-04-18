@@ -64,13 +64,11 @@ typedef struct LinkedListType
 
 ```
 /*linked list를 만든다*/
-LinkedList*	createLinkedList()
+LinkedList* createLinkedList() // Linked list 생성
 {
 	LinkedList	*pList;
 
 	pList = (LinkedList *)calloc(1, sizeof(LinkedList));
-	if (!pList)
-		return (FALSE);
 	return (pList);
 }
 ```
@@ -89,42 +87,39 @@ int addLLElement(LinkedList* pList, int position, ListNode element) // Node 추�
 	
 	if (!pList || !(position >= 0 && position <= pList->currentElementCount))
 		return (FALSE);
-	if(position == 0)
-	{
-		if (pList->currentElementCount == 0) // Header Node가 없을 때
-		{
-			pList->headerNode = element; // 인자로 들어온 Node를 할당한다.
+	if(position == 0) {
+		// Header Node가 없을 때 
+		if (pList->currentElementCount == 0) {
+			pList->headerNode = element; 			// 인자로 들어온 Node를 할당한다.
 			pList->currentElementCount = 1;
 			pList->headerNode.pLink = NULL;
-		}
-		else // Header Node가 있을 때
-		{
-			curr = malloc(sizeof(ListNode)); // 원래 header 의 데이터 복사
+		// Header Node가 있을 때 
+		} else { 
+			curr = malloc(sizeof(ListNode)); 		// 원래 header 의 데이터 복사
 			curr->data = pList->headerNode.data;
 			curr->pLink = pList->headerNode.pLink;
-			element.pLink = curr; // 새로 들어온 element를 헤더로 바꾸기 위해 복사한 포인터를 next로 지칭
-			pList->headerNode = element; // 새로 들어온 element를 헤더로 바꿔준다.
+			element.pLink = curr; 					// 새로 들어온 element를 헤더로 바꾸기 위해 복사한 포인터를 next로 지칭
+			pList->headerNode = element; 			// 새로 들어온 element를 헤더로 바꿔준다.
 			pList->currentElementCount += 1;
 		}
 	}
 	pNode = &(pList->headerNode);
 	i = 0;
-	while(pNode && i < position)
-	{
-		if (i + 1 == position) // 새로 들어올 node를 위해 position 이전의 node의 주소를 저장한다.
+	while(pNode && i < position) {
+		// 새로 들어올 node를 위해 position 이전의 node의 주소를 저장한다.
+		if (i + 1 == position) 
 			prev = pNode;
 		pNode = pNode->pLink;
 		i++;
 	}
-	if (position == i) // Node 추가
-	{
-		curr = malloc(sizeof(ListNode)); // node 추가를 위한 데이터 복사
+	// Node 추가
+	if (position == i) {
+		curr = malloc(sizeof(ListNode)); 			// node 추가를 위한 데이터 복사
 		curr->data = element.data;
-		curr->pLink = pNode; // 원래 위치의 node를 밀어내로
-		prev->pLink = curr; // 원래 node 전의 node 의 next로 연결한다.
+		curr->pLink = pNode; 						// 원래 위치의 node를 밀어내로
+		prev->pLink = curr; 						// 원래 node 전의 node 의 next로 연결한다.
 		pList->currentElementCount += 1;
-	}
-	else
+	} else
 		return (TRUE);
 }
 ```
@@ -142,7 +137,8 @@ ListNode* getLLElement(LinkedList* pList, int position) // 원하는 위치의 N
     if (!(position >= 0 && position <= pList->currentElementCount))
         return (FALSE);
 	pNode = &(pList->headerNode);
-	while(position--) // position 만큼 이동한다.
+	// position 만큼 이동한다.
+	while(position--) 
 		pNode = pNode->pLink;
     return (pNode);
 }
@@ -159,21 +155,23 @@ int removeLLElement(LinkedList* pList, int position) // node를 지운다.
 	ListNode	*pNode;
 	ListNode	*prev;
 	ListNode	*next;
+
 	// 위치가 음수인 것과 현재 엘리먼트 갯수보다 큰 위치의 노드는 없다!
 	if (!(position >= 0 && position < pList->currentElementCount))
 		return (FALSE);
 	i = 0;
 	pNode = &(pList->headerNode);
-	if (position == 0) // Header Node일 때
+	// Header Node일 때
+	if (position == 0) 
 	{
-		if (!(pNode->pLink)) // Header Node 의 Next가 없을 때
+		// Header Node 의 Next가 없을 때
+		if (!(pNode->pLink)) 
 		{
 			pNode->data = 0x00;
 			pNode->pLink = NULL;
 			pList->currentElementCount -= 1;
-		}
-		else // Header Node 의 Next가 있을 때
-		{
+		// Header Node 의 Next가 있을 때
+		} else {
 			pNode->data = 0x00;
 			next = pNode->pLink;
 			pList->headerNode = *next; // Header Node Next로 교체한다.
@@ -182,24 +180,22 @@ int removeLLElement(LinkedList* pList, int position) // node를 지운다.
 		}
 		return (TRUE);
 	}
-	while (pNode != NULL && i < position)
-	{
+	while (pNode != NULL && i < position) {
 		if (i + 1 == position)
 			prev = pNode;
 		pNode = pNode->pLink;
 		i++;
 	}
-	if (pNode && i == position) // Header Node가 아닐 때
-	{
-		next = pNode->pLink; // 현재 위치 다음 것을
-		prev->pLink = next; // 현재 위치 전의 것에 연결해준다.
+	// Header Node가 아닐 때
+	if (pNode && i == position) {
+		next = pNode->pLink; 			// 현재 위치 다음 것을
+		prev->pLink = next; 			// 현재 위치 전의 것에 연결해준다.
 		pNode->data = 0x00;
 		pNode->pLink = NULL;
 		free(pNode);
 		pList->currentElementCount -= 1;
 		return (TRUE);
-	}
-	else
+	} else
 		return (FALSE);
 }
 ```
@@ -215,8 +211,7 @@ void clearLinkedList(LinkedList* pList) // 내부 Node를 전부 없애준다.
 	ListNode *next;
 
 	pNode = pList->headerNode.pLink;
-	while(pNode)
-	{
+	while(pNode) {
 		next = pNode->pLink;
 		pNode->data = 0x00;
 		free(pNode);
