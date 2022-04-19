@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   linkedlist.c                                       :+:      :+:    :+:   */
+/*   linkedlistwwww.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yeblee <yeblee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/16 15:56:54 by yeblee            #+#    #+#             */
-/*   Updated: 2022/04/17 13:54:28 by yeblee           ###   ########.fr       */
+/*   Updated: 2022/04/18 11:52:49 by yeblee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,25 @@ int addLLElement(LinkedList* pList, int position, ListNode element)
 	pNewNode = (ListNode*)malloc(sizeof(ListNode));
 	if (!pNewNode)
 		return (FALSE);
-	*pNewNode = element;
+	pNewNode->data = element.data;
 	pNewNode->pLink = NULL;
+	ListNode	*node = &(pList->headerNode);
 	if (position == 0) {
-			pNewNode->pLink = pList->headerNode.pLink;
+		if (!(node->pLink))
+		{
 			pList->headerNode = *pNewNode;
+		}
+		else{
+			pNewNode->pLink = node->pLink;
+			pList->headerNode = *pNewNode;
+		}
 	} else {
 		pNode = getLLElement(pList, position-1);
 		pNewNode->pLink = pNode->pLink;
 		pNode->pLink = pNewNode;
 	}
 	pList->currentElementCount++;
+	printf("%d\n", pList->headerNode.data);
 	return (TRUE);
 }
 
@@ -78,7 +86,7 @@ ListNode*	getLLElement(LinkedList *pList, int position)
 
 	if (!pList || !(position >= 0 && position <= pList->currentElementCount))
 		return (FALSE);
-	pNode = pList->headerNode.pLink;
+	pNode = &(pList->headerNode);
 	while (position--)
 		pNode = pNode->pLink;
 	return (pNode);
@@ -92,14 +100,14 @@ void clearLinkedList(LinkedList *pList)
 
 	if (!pList)
 		return ;
-	pDelNode = pList->headerNode.pLink;
+	pDelNode = &(pList->headerNode);;
 	while (pDelNode) {
 		pNode = pDelNode->pLink;
 		free(pDelNode);
 		pDelNode = NULL;
 		pDelNode = pNode;
 	}
-	pList->headerNode.pLink = NULL;
+	// pList->headerNode = NULL;
 	pList->currentElementCount = 0;
 }
 
@@ -230,7 +238,7 @@ int	main(void)
 
 	//PRINT
 	i = 0;
-	pNode = pList->headerNode.pLink;
+	pNode = &(pList->headerNode);
 	while (pNode) // 리스트 노드 순회
 	{
 		printf("[%d]: %d\n", i++, pNode->data);
