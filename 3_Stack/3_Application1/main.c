@@ -2,18 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 
-// int main(int argc, char **argv) {
-//     if (argc != 2) return 0;
-//     else {
-//         printf("inserted input : [%s] :)\n", argv[1]);
-//         char *reversed = strrev((const char *)argv[1], strlen(argv[1]));
-//         printf("reversed input : [%s] :D\n", reversed);
-//         free(reversed);
-//     }
-//     system("leaks reverseString");
-//     return 0;
-// }
-
 void testSpace(char *str, bool expected) {
     static int testNumber;
     printf("testCase No.%d | ", testNumber++);
@@ -22,7 +10,8 @@ void testSpace(char *str, bool expected) {
     printf("is the answer correct? : [%s ]\n", (checker == expected) ? "✅ :)" : "❌ :(");
 }
 
-int main(void) {
+int main(int argc, char **argv) {
+    //blank checker
     testSpace("1234", true);
 
     testSpace("(12)34", true);
@@ -56,5 +45,16 @@ int main(void) {
     testSpace("2x[{(ax + by + c)(dx + ey + f)}^2]", true);
     testSpace("(a + b)^2", true);
     testSpace("2{(a^2 + ab + b^2)(a^2 - ab + b^2)}", true);
+
+    // revers string
+    if (argc != 2) return 0;
+    else {
+        printf("inserted input : [%s] :)\n", argv[1]);
+        char *reversed = strrev((const char *)argv[1], strlen(argv[1]));
+        printf("reversed input : [%s] :D\n", reversed);
+        free(reversed);
+    }
+    system("leaks reverseString");
+    return 0;
     return 0;
 }

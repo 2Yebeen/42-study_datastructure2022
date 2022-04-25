@@ -1,4 +1,4 @@
-NAME			= blankChecker
+NAME			= blankRev
 DNAME			= test_debug
 CC				= gcc
 CFLAGS			= -Wall -Wextra -Werror
@@ -9,7 +9,7 @@ OBJDIR			= ./obj/
 SRCDIR			= ./src/
 DEBUG			= -g3 -fsanitize=address
 MAIN			= main.c
-SRCS			= farraystack.c blankChecker.c
+SRCS			= farraystack.c blankChecker.c revstr.c
 
 MAIN_OBJS_FILE	= $(MAIN:.c=.o)
 MAIN_OBJS		= $(addprefix $(OBJDIR), $(MAIN_OBJS_FILE))
