@@ -3,9 +3,8 @@
 <br>
 
 ## 리스트 구현
-- [ArrayList](https://github.com/33bini/42-study_datastructure2022/tree/main/2_List/ArrayList)
-- [Singly LinkedList](https://github.com/33bini/42-study_datastructure2022/tree/main/2_List/LinkedList)
-
+- [Array](https://github.com/33bini/42-study_datastructure2022/tree/main/2_List/1_ArrayList), [Linked](https://github.com/33bini/42-study_datastructure2022/tree/main/2_List/1_SinglyLinkedList) List 구현하기
+- [circular](https://github.com/33bini/42-study_datastructure2022/tree/main/2_List/2_CircularLinkedList), [double linked list](https://github.com/33bini/42-study_datastructure2022/tree/main/2_List/2_DoublyLinkedList) 구현하기, linked list 역순, [다항식의 덧셈](https://github.com/33bini/42-study_datastructure2022/tree/main/2_List/3_Polynomial)
 <br>
 
 ## 비교
