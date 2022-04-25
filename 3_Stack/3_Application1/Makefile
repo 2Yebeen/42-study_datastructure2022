@@ -1,4 +1,4 @@
-NAME			= blankRev
+NAME			= blankRevChecker
 DNAME			= test_debug
 CC				= gcc
 CFLAGS			= -Wall -Wextra -Werror
