@@ -1,5 +1,6 @@
 #include <stdio.h> 
 #include <stdlib.h> 
+// https://www.youtube.com/watch?v=SBKHKlHkzuI
 
 #define MAX_SIZE 100 
 #define MAZE_SIZE 5 
