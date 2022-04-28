@@ -3,11 +3,11 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "mapdef.h"
+#include "./mapdef.h"
 
 typedef struct StackNodeType
 {
-	char data;
+	MapPosition data;
 	struct StackNodeType* pLink;
 } StackNode;
 
@@ -27,7 +27,7 @@ int isLinkedStackFull(LinkedStack* pStack);
 int isLinkedStackEmpty(LinkedStack* pStack);
 
 void displayLinkedStack(LinkedStack *pStack);
-StackNode* createLinkedStackNode(char data);
+StackNode* createLinkedStackNode(MapPosition data);
 
 #endif // _LINKED_STACK_
 

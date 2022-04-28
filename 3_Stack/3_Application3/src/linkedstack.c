@@ -1,4 +1,5 @@
-#include "../includes/linkedstack.h"
+#include "../include/linkedstack.h"
+#include "../include/mapdef.h"
 
 LinkedStack* createLinkedStack(size_t maxSize) {
     LinkedStack *ret = (LinkedStack *)calloc(sizeof(LinkedStack), 1);
@@ -7,7 +8,7 @@ LinkedStack* createLinkedStack(size_t maxSize) {
     return ret;
 }
 
-StackNode* createLinkedStackNode(char data) {
+StackNode* createLinkedStackNode(MapPosition data) {
     StackNode *pNewNode;
 
     pNewNode = (StackNode *)calloc(sizeof(StackNode), 1);
