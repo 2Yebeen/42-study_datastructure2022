@@ -1,50 +1,81 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "../include/bintree.h"
 
-// tree 생성
-BinTree* makeBinTree(BinTreeNode rootNode) {
-    BinTree *pTree = (BinTree *)calloc(1, sizeof(BinTree));
-    if (pTree == NULL || rootNode == NULL) return NULL;
-    pTree->pRootNode = rootNode;
-    return pTree;
+BinTree* makeBinTree(BinTreeNode rootNode)
+{
+	BinTree *newTree = (BinTree *)calloc(1, sizeof(BinTree));
+	newTree->pRootNode = makeBinTreeNode(rootNode.data, rootNode.visited);
+	return (newTree);
+}
+BinTreeNode* makeBinTreeNode(char data, int visited)
+{
+	BinTreeNode *newNode = (BinTreeNode *)calloc(1, sizeof(BinTreeNode));
+	newNode->data = data;
+	newNode->visited = visited;
+	return (newNode);
+}
+BinTreeNode* getRootNodeBT(BinTree* pBinTree)
+{
+	return (pBinTree->pRootNode);
+}
+BinTreeNode* insertLeftChildNodeBT(BinTreeNode* pParentNode, BinTreeNode element)
+{
+	BinTreeNode *newNode = (BinTreeNode *)calloc(1, sizeof(BinTreeNode));
+	newNode->data = element.data;
+	newNode->visited = element.visited;
+	if (pParentNode->pLeftChild == NULL)
+	{
+		pParentNode->pLeftChild = newNode;
+	}
+	else
+	{
+		BinTreeNode *oldNode;
+		oldNode = getLeftChildNodeBT(pParentNode);
+		pParentNode->pLeftChild = newNode;
+		newNode->pLeftChild = oldNode;
+	}
+	return (newNode);
+}
+BinTreeNode* insertRightChildNodeBT(BinTreeNode* pParentNode, BinTreeNode element)
+{
+	BinTreeNode *newNode = (BinTreeNode *)calloc(1, sizeof(BinTreeNode));
+	newNode->data = element.data;
+	newNode->visited = element.visited;
+	if (pParentNode->pRightChild == NULL)
+	{
+		pParentNode->pRightChild = newNode;
+	}
+	else
+	{
+		BinTreeNode *oldNode;
+		oldNode = getRightChildNodeBT(pParentNode);
+		pParentNode->pRightChild = newNode;
+		newNode->pRightChild = oldNode;
+	}
+	return (newNode);
+}
+BinTreeNode* getLeftChildNodeBT(BinTreeNode* pNode)
+{
+	return (pNode->pLeftChild);
+}
+BinTreeNode* getRightChildNodeBT(BinTreeNode* pNode)
+{
+	return (pNode->pRightChild);
+}
+void deleteBinTree(BinTree* pBinTree)
+{
+	if (pBinTree != NULL) {
+		deleteBinTreeNode(pBinTree->pRootNode);
+		free(pBinTree);
+		pBinTree = NULL;
+	}
 }
 
-// 루트노드 반환
-BinTreeNode* getRootNodeBT(BinTree* pBinTree) {
-    if (pBinTree == NULL) return NULL;
-    return pBinTree->pRootNode;
+void deleteBinTreeNode(BinTreeNode* pNode)
+{
+	if (pNode != NULL) {
+		deleteBinTreeNode(pNode->pLeftChild);
+		deleteBinTreeNode(pNode->pRightChild);
+		free(pNode);
+		pNode = NULL;
+	}
 }
-
-// 자식 노드 삽입(왼쪽)
-BinTreeNode* insertLeftChildNodeBT(BinTreeNode* pParentNode, BinTreeNode element) {
-    if (pParentNode)
-
-}
-
-// 자식 노드 삽입(오른쪽)
-BinTreeNode* insertRightChildNodeBT(BinTreeNode* pParentNode, BinTreeNode element) {
-
-}
-
-// 자식 노드 반환(왼쪽)
-BinTreeNode* getLeftChildNodeBT(BinTreeNode* pNode) {
-
-}
-
-// 자식 노드 반환(오른쪽)
-BinTreeNode* getRightChildNodeBT(BinTreeNode* pNode) {
-
-}
-
-// 노드 삭제
-void deleteBinTreeNode(BinTreeNode* pNode) {
-
-}
-
-// 트리 삭제
-void deleteBinTree(BinTree* pBinTree) {
-
-}
-
