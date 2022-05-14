@@ -52,3 +52,5 @@ Mkfile.old
 dkms.conf
 6_Tree/.DS_Store
 .DS_Store
+6_Tree/.vscode/tasks.json
+6_Tree/.vscode/launch.json
