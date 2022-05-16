@@ -9,13 +9,13 @@ typedef struct BinarySearchTreeNodeType
 {
     int key;
 	char data;
-	BSTreeNode* pLeftChild;
-	BSTreeNode* pRightChild;
+	struct BinarySearchTreeNodeType *pLeftChild;
+	struct BinarySearchTreeNodeType *pRightChild;
 } BSTreeNode;
 
 typedef struct BinarySearchTreeType
 {
-	BSTreeNode* pRootNode;
+	struct BinarySearchTreeNodeType *pRootNode;
 } BSTree;
 
 // 생성
@@ -24,11 +24,12 @@ BSTree* createBinarySearchTree();
 int insertBSTreeNode(BSTree* pBSTree, BSTreeNode element);
 // 검색
 BSTreeNode* searchBSTreeNode(BSTree* pBSTree, int key);
+BSTreeNode* searchBSTreeParentNode(BSTree* pBSTree, int key);
 // 제거
-int deleteBSTreeNode(BSTreeNode* pNode, int key);
+int deleteBSTreeNode(BSTree* pBSTree, int key);
 // 삭제
 void deleteBinarySearchTree(BSTree* pBSTree);
-void deleteBinarySEarchTreeNode(BSTreeNode* pNode);
+void deleteBinarySearchTreeNode(BSTreeNode* pNode);
 
 #endif // _BINARY_SEARCH_TREE_
 
