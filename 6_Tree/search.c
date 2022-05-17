@@ -2,20 +2,11 @@
 
 void displayBinSearchTreeInternal(BSTreeNode *pTreeNode, int level, char type)
 {
-    int i = 0;
-	for (i = 0; i < level ; i++) {
-		printf("    ");
-	}
-
 	if (pTreeNode != NULL) {
-		printf("-[%i,%c]%i-%c\n", level, type, 
-			pTreeNode->key, pTreeNode->data);
+		printf("[%i,%c] %i(%c)\n", level, type, pTreeNode->key, pTreeNode->data);
 
 		displayBinSearchTreeInternal(pTreeNode->pLeftChild, level + 1, 'L');
 		displayBinSearchTreeInternal(pTreeNode->pRightChild, level + 1, 'R');
-	}
-	else {
-		printf("NULL\n");
 	}
 }
 
@@ -39,6 +30,9 @@ int main(void)
 	pTree = createBinarySearchTree();
 	if (pTree != NULL) 
 	{
+		printf("\n=======================================================\n");
+		printf("\t\t\tinsert\n");
+		printf("=======================================================\n");
 		insertBSTreeNode(pTree, e1);
 		insertBSTreeNode(pTree, e2);
 		insertBSTreeNode(pTree, e3);
@@ -51,31 +45,37 @@ int main(void)
 		insertBSTreeNode(pTree, e10);
 		displayBinSearchTreeInternal(pTree->pRootNode, 0, 'R');
 
-
+		printf("\n=======================================================\n");
+		printf("\t\t\tsearch\n");
+		printf("=======================================================\n");
 		key = 14;
 		pSearchNode = searchBSTreeNode(pTree, key);
 		if (pSearchNode != NULL) {
 			printf("[%d], -[%c]\n", key, pSearchNode->data);
 		}
-		else {
-			printf("[%d],\n", key);
-		}
 
+		printf("\n=======================================================\n");
+		printf("\t\t\tdelete\n");
+		printf("=======================================================\n");
 		key = 30;
-		printf("-[%d]\n", key);
+		printf("[%d]\n", key);
 		deleteBSTreeNode(pTree, key);
 		displayBinSearchTreeInternal(pTree->pRootNode, 0, 'R');
 
+		printf("\n=======================================================\n");
+		printf("\t\t\tsearch\n");
+		printf("=======================================================\n");
 		pSearchNode = searchBSTreeNode(pTree, key);
 		if (pSearchNode != NULL) {
-			printf("[%d], -[%c]\n", key, pSearchNode->data);
+			printf("[%d]-[%c]\n", key, pSearchNode->data);
 		}
 		else {
-			printf("[%d],\n", key);
+			printf("No key [%d]\n", key);
 		}
 
 
 		deleteBinarySearchTree(pTree);
+		// system("leaks a.out");
 	}
 
 	return 0;
