@@ -13,7 +13,7 @@ int insertBSTreeNode(BSTree* pBSTree, BSTreeNode element) {
     // 검색 연산 성공 : 자료 추가 불가능
     if (searchBSTreeNode(pBSTree, element.key) != NULL || pBSTree == NULL) return FALSE;
     // 검색 연산 실패 : 자료 추가 가능
-
+    
 }
 
 BSTreeNode* searchBSTreeNode(BSTree* pBSTree, int key) {
