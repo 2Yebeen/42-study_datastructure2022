@@ -93,6 +93,7 @@ int deleteBSTreeNode(BSTree* pBSTree, int key) {
         if (pPre->pLeftChild == pNode) pPre->pLeftChild = pNode->pLeftChild;
         else pPre->pRightChild = pNode->pLeftChild;
         pDelNode->key = pNode->key;
+        pDelNode->data = pNode->data;
         pDelNode = pNode;
         
     } // 삭제 하려는 노드의 자식 노드가 1개인 경우,
@@ -111,6 +112,7 @@ int deleteBSTreeNode(BSTree* pBSTree, int key) {
         }
     }
     free (pDelNode);
+    pDelNode = NULL;
     return ret;
 }
 
