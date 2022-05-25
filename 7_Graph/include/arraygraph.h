@@ -1,6 +1,10 @@
 #ifndef _GRAPH_ADJMATRIX_
 #define _GRAPH_ADJMATRIX_
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 typedef struct ArrayGraphType
 {
 	int maxVertexCount;		// 최대 노드 개수

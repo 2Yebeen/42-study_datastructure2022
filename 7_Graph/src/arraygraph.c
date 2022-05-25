@@ -6,12 +6,12 @@ ArrayGraph* createArrayGraph(int maxVertexCount){
 }
 
 ArrayGraph* createArrayDirectedGraph(int maxVertexCount){
+    ArrayGraph *pGraph = NULL;
 
-}
+    pGraph = createArrayGraph(maxVertexCount);
+    if (pGraph != NULL) pGraph->graphType = GRAPH_DIRECTED;
 
-// 그래프 삭제
-void deleteArrayGraph(ArrayGraph* pGraph){
-
+    return pGraph;
 }
 
 // 공백 그래프 여부 판단
@@ -48,7 +48,19 @@ int removeEdgeAG(ArrayGraph* pGraph, int fromVertexID, int toVertexID){
 
 }
 
+// 그래프 삭제
+void deleteArrayGraph(ArrayGraph* pGraph){
+
+}
+
 // 그래프 정보 출력
 void displayArrayGraph(ArrayGraph* pGraph){
-    
+    if (pGraph != NULL) {
+        for (int i = 0; i < pGraph->maxVertexCount; i++) {
+            for (int j = 0; j < pGraph->maxVertexCount; j++) {
+                printf(" [%d] ", pGraph->ppAdjEdge[i][j]);
+            }
+            printf("\n");
+        }
+    }
 }
